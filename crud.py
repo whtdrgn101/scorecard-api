@@ -34,3 +34,9 @@ def update_user(db: Session, user: schemas.User):
 ###
 def get_bows_by_user(db: Session, user_id: int, skip: int = 0, limit: int = 100):
     return db.query(models.Bow).filter(models.Bow.user_id == user_id).offset(skip).limit(limit).all()
+
+###
+### Round Methods
+###
+def get_rounds_by_user(db: Session, user_id: int, skip: int = 0, limit: int = 100):
+    return db.query(models.Round).filter(models.Round.user_id == user_id).offset(skip).limit(limit).all()

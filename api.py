@@ -52,3 +52,10 @@ def update_user(db: DBConn, user: schemas.User):
 @app.get("/user/{user_id}/bows", response_model=list[schemas.Bow])
 def get_bows_by_user(db: DBConn, user_id: int, skip: int = 0, limit: int = 100):
     return crud.get_bows_by_user(db = db, user_id=user_id, skip = skip, limit=limit)
+
+##
+## Round Methods
+##
+@app.get("/user/{user_id}/rounds", response_model=list[schemas.Round])
+def get_bows_by_user(db: DBConn, user_id: int, skip: int = 0, limit: int = 100):
+    return crud.get_rounds_by_user(db = db, user_id=user_id, skip = skip, limit=limit)

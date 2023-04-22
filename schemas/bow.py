@@ -28,7 +28,8 @@ class Bow(BowBase):
     id: int
     created_date: datetime.datetime
     updated_date: datetime.datetime
-
+    bow_type: BowType
+    
     class Config:
         orm_mode = True
 

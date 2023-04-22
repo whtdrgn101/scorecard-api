@@ -1,9 +1,10 @@
-from sqlalchemy import Column, Integer, String, Date, Boolean, Float, ForeignKey
+from sqlalchemy import Column, Integer, String, Date, Boolean, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from .base import Base
+from .bow import Bow
 
-class BowType(Base):
-    __tablename__ = "bow_type"
+class RoundType(Base):
+    __tablename__ = "round_type"
 
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, unique=False, index=False)
@@ -13,15 +14,17 @@ class BowType(Base):
 
     
 
-class Bow(Base):
-    __tablename__ = "bow"
+class Round(Base):
+    __tablename__ = "round"
 
     id = Column(Integer, primary_key=True, index=True)
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
-    bow_type_id: Mapped[int] = mapped_column(ForeignKey("bow_type.id"))
-    name = Column(String, unique=False, index=False)
-    draw_weight = Column(Float, unique=False, index=False)
+    bow_id: Mapped[int] = mapped_column(ForeignKey("bow.id"))
+    round_type_id: Mapped[int] = mapped_column(ForeignKey("round_type.id"))
+    round_date = Column(Date, unique=False, index=False)
+    score_total = Column(Integer, unique=False, index=False)
     created_date = Column(Date, unique=False, index=False)
     updated_date = Column(Date, unique=False, index=False)
 
-    bow_type: Mapped[BowType] = relationship()
+    round_type: Mapped[RoundType] = relationship()
+    bow: Mapped[Bow] = relationship()
