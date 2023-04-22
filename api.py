@@ -41,3 +41,7 @@ def read_customer(db: DBConn, user_id: int):
 @app.post("/user/", response_model=schemas.User)
 def create_user(db: DBConn, user: schemas.UserCreate):
     return crud.create_user(db = db, user = user)
+
+@app.put("/user/", response_model=schemas.User)
+def update_user(db: DBConn, user: schemas.User):
+    return crud.update_user(db = db, user = user)
