@@ -45,3 +45,10 @@ def create_user(db: DBConn, user: schemas.UserCreate):
 @app.put("/user/", response_model=schemas.User)
 def update_user(db: DBConn, user: schemas.User):
     return crud.update_user(db = db, user = user)
+
+##
+## Bow Methods
+##
+@app.get("/user/{user_id}/bows", response_model=list[schemas.Bow])
+def get_bows_by_user(db: DBConn, user_id: int, skip: int = 0, limit: int = 100):
+    return crud.get_bows_by_user(db = db, user_id=user_id, skip = skip, limit=limit)
