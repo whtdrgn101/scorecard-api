@@ -35,6 +35,24 @@ def update_user(db: Session, user: schemas.User):
 def get_bows_by_user(db: Session, user_id: int, skip: int = 0, limit: int = 100):
     return db.query(models.Bow).filter(models.Bow.user_id == user_id).offset(skip).limit(limit).all()
 
+def create_bow(db: Session, bow: schemas.BowCreate):
+    new_bow = models.Bow(bow_type_id = bow.bow_type_id, user_id = bow.user_id, name = bow.name,  draw_weight = bow.draw_weight, created_date = datetime.now(), updated_date = datetime.now())
+    db.add(new_bow)
+    db.commit()
+    db.refresh(new_bow)
+    return new_bow
+
+def update_bow(db: Session, bow: schemas.Bow):
+    bow_changed = db.query(models.Bow).filter(models.Bow.id == bow.id).first()
+    bow_changed.bow_type_id = bow.bow_type_id
+    bow_changed.user_id = bow.user_id
+    bow_changed.name = bow.name
+    bow_changed.draw_weight = bow.draw_weight
+    bow_changed.updated_date = datetime.now()
+    db.commit()
+    db.refresh(bow_changed)
+    return bow_changed
+
 ###
 ### Round Methods
 ###

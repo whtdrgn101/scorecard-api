@@ -43,19 +43,29 @@ def create_user(db: DBConn, user: schemas.UserCreate):
     return crud.create_user(db = db, user = user)
 
 @app.put("/user/", response_model=schemas.User)
-def update_user(db: DBConn, user: schemas.User):
+def update_user(db: DBConn, user: schemas.UserUpdate):
     return crud.update_user(db = db, user = user)
 
 ##
 ## Bow Methods
 ##
-@app.get("/user/{user_id}/bows", response_model=list[schemas.Bow])
+@app.get("/user/{user_id}/bow", response_model=list[schemas.Bow])
 def get_bows_by_user(db: DBConn, user_id: int, skip: int = 0, limit: int = 100):
     return crud.get_bows_by_user(db = db, user_id=user_id, skip = skip, limit=limit)
+
+@app.post("/user/{user_id}/bow", response_model=schemas.Bow)
+def create_bow(db: DBConn, user_id: int, bow: schemas.BowCreate):
+    return crud.create_bow(db = db, bow = bow)
+
+@app.put("/user/{user_id}/bow/{bow_id}", response_model=schemas.Bow)
+def update_user(db: DBConn, user_id: int, bow_id: int, bow: schemas.BowUpdate):
+    bow.id = bow_id
+    bow.user_id = user_id
+    return crud.update_bow(db = db, bow = bow)
 
 ##
 ## Round Methods
 ##
-@app.get("/user/{user_id}/rounds", response_model=list[schemas.Round])
+@app.get("/user/{user_id}/round", response_model=list[schemas.Round])
 def get_bows_by_user(db: DBConn, user_id: int, skip: int = 0, limit: int = 100):
     return crud.get_rounds_by_user(db = db, user_id=user_id, skip = skip, limit=limit)

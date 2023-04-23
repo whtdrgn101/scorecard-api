@@ -19,17 +19,21 @@ class BowType(BowTypeBase):
 class BowBase(BaseModel):
     name: str
     bow_type_id: int
+    user_id: int
     draw_weight: float
 
 class BowCreate(BowBase):
     pass
 
+class BowUpdate(BowBase):
+    id: int
+    
 class Bow(BowBase):
     id: int
     created_date: datetime.datetime
     updated_date: datetime.datetime
     bow_type: BowType
-    
+
     class Config:
         orm_mode = True
 

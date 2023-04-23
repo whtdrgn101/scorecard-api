@@ -9,6 +9,9 @@ class UserBase(BaseModel):
 class UserCreate(UserBase):
     pass
 
+class UserUpdate(UserBase):
+    id: int
+
 class User(UserBase):
     id: int
     created_date: datetime.datetime
