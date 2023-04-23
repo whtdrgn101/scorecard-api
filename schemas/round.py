@@ -22,16 +22,19 @@ class RoundBase(BaseModel):
     user_id: int
     bow_id: int
     round_date: datetime.datetime
-    score_total: str
-
+   
 class RoundCreate(RoundBase):
     pass
 
+class RoundUpdate(RoundBase):
+    id: int
+        
 class Round(RoundBase):
     id: int
     created_date: datetime.datetime
     updated_date: datetime.datetime
     round_type: RoundType
+    score_total: int
     bow: Bow
 
     class Config:

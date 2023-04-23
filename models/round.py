@@ -13,7 +13,6 @@ class RoundType(Base):
     updated_date = Column(Date, unique=False, index=False)
 
     
-
 class Round(Base):
     __tablename__ = "round"
 

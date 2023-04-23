@@ -8,5 +8,6 @@ from .bow import BowCreate
 from .bow import BowUpdate
 from .round import Round
 from .round import RoundCreate
+from .round import RoundUpdate
 from .round import RoundType
 from .round import RoundTypeCreate
