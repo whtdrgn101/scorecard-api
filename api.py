@@ -79,3 +79,20 @@ def update_round(db: DBConn, user_id: int, round_id: int, round: schemas.RoundUp
     round.id = round_id
     round.user_id = user_id
     return crud.update_round(db = db, round = round)
+
+##
+## End Methods
+##
+@app.post("/user/{user_id}/round/{round_id}/end", response_model=schemas.End)
+def create_end(db: DBConn, user_id: int, end: schemas.EndCreate):
+    return crud.create_end(db = db, end = end)
+
+@app.put("/user/{user_id}/round/{round_id}/end/{end_id}", response_model=schemas.End)
+def update_end(db: DBConn, user_id: int, round_id: int, end_id: int, end: schemas.EndUpdate):
+    end.id = end_id
+    end.round_id = round_id
+    return crud.update_end(db = db, end = end)
+
+@app.delete("/user/{user_id}/round/{round_id}/end/{end_id}", response_model=schemas.Message)
+def delete_end(db: DBConn, user_id: int, round_id: int, end_id: int):
+    return crud.delete_end(db = db, end_id = end_id)

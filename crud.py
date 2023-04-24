@@ -75,3 +75,33 @@ def update_round(db: Session, round: schemas.Round):
     db.commit()
     db.refresh(round_changed)
     return round_changed
+
+###
+### End Methods
+###
+def create_end(db: Session, end: schemas.EndCreate):
+    new_end = models.End(score = end.score, round_id = end.round_id, created_date = datetime.now(), updated_date = datetime.now())
+    db.add(new_end)
+    db.commit()
+    db.refresh(new_end)
+    return new_end
+
+def update_end(db: Session, end: schemas.EndUpdate):
+    end_changed = db.query(models.End).filter(models.End.id == end.id).first()
+    end_changed.score = end.score
+    end_changed.updated_date = datetime.now()
+    db.commit()
+    db.refresh(end_changed)
+    return end_changed
+
+def delete_end(db: Session, end_id: int):
+    deleted_end = db.query(models.End).filter(models.End.id == end_id).first()
+    
+    if deleted_end is not None:
+        db.delete(deleted_end)
+        db.commit()    
+        message = schemas.Message(message=f"Deleted end {end_id}", message_date=datetime.now())
+    else:
+        message = schemas.Message(message=f"Message {end_id} not found!", message_date=datetime.now())
+    
+    return message

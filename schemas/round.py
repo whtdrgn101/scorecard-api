@@ -1,6 +1,8 @@
 from pydantic import BaseModel
+from typing import List, Optional
 import datetime
 from .bow import Bow
+from .end import End
 
 class RoundTypeBase(BaseModel):
     name: str
@@ -36,6 +38,7 @@ class Round(RoundBase):
     round_type: RoundType
     score_total: int
     bow: Bow
-
+    ends: Optional[List[End]]
+    
     class Config:
         orm_mode = True

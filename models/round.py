@@ -2,6 +2,7 @@ from sqlalchemy import Column, Integer, String, Date, Boolean, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from .base import Base
 from .bow import Bow
+from .end import End
 
 class RoundType(Base):
     __tablename__ = "round_type"
@@ -27,3 +28,4 @@ class Round(Base):
 
     round_type: Mapped[RoundType] = relationship()
     bow: Mapped[Bow] = relationship()
+    ends: Mapped[list[End]] = relationship()
