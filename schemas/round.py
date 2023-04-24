@@ -3,6 +3,7 @@ from typing import List, Optional
 import datetime
 from .bow import Bow
 from .end import End
+import json
 
 class RoundTypeBase(BaseModel):
     name: str
@@ -39,6 +40,14 @@ class Round(RoundBase):
     score_total: int
     bow: Bow
     ends: Optional[List[End]]
-    
+
     class Config:
         orm_mode = True
+
+class RoundCreateEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, RoundCreate):
+            return {"user_id": obj.user_id, "round_type_id": obj.round_type_id, "bow_id": obj.bow_id, "round_date": obj.round_date}
+        if isinstance(obj, datetime.datetime):
+            return obj.isoformat()
+        return super().default(obj)

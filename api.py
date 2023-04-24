@@ -24,6 +24,23 @@ def get_db():
 DBConn = Annotated[Session, Depends(get_db)]
 
 ##
+## Middleware for logging
+##
+@app.middleware("http")
+async def log_requests(request, call_next):
+    # intercept the request
+    print(f"Received {request.method} request to {request.url}")
+    print(request.headers)
+
+    # call the next middleware or route
+    response = await call_next(request)
+
+    # intercept the response
+    print(response)
+
+    return response
+
+##
 ## User API's
 ##
 @app.get("/user/", response_model=list[schemas.User])
