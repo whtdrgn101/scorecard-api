@@ -96,12 +96,6 @@ def update_end(db: Session, end: schemas.EndUpdate):
 
 def delete_end(db: Session, end_id: int):
     deleted_end = db.query(models.End).filter(models.End.id == end_id).first()
-    
-    if deleted_end is not None:
-        db.delete(deleted_end)
-        db.commit()    
-        message = schemas.Message(message=f"Deleted end {end_id}", message_date=datetime.now())
-    else:
-        message = schemas.Message(message=f"Message {end_id} not found!", message_date=datetime.now())
-    
-    return message
+    db.delete(deleted_end)
+    db.commit()    
+    return schemas.Message(message=f"Deleted end {end_id}", message_date=datetime.now())

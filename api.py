@@ -42,9 +42,13 @@ def read_customer(db: DBConn, user_id: int):
 def create_user(db: DBConn, user: schemas.UserCreate):
     return crud.create_user(db = db, user = user)
 
-@app.put("/user/", response_model=schemas.User)
-def update_user(db: DBConn, user: schemas.UserUpdate):
-    return crud.update_user(db = db, user = user)
+@app.put("/user/{user_id}", response_model=schemas.User)
+def update_user(db: DBConn, user_id: int, user: schemas.UserUpdate):
+    try:
+        user.id = user_id
+        return crud.update_user(db = db, user = user)
+    except:
+        raise HTTPException(status_code=404, detail=f"User with end_id={user_id} not found.")
 
 ##
 ## Bow Methods
@@ -61,7 +65,10 @@ def create_bow(db: DBConn, user_id: int, bow: schemas.BowCreate):
 def update_bow(db: DBConn, user_id: int, bow_id: int, bow: schemas.BowUpdate):
     bow.id = bow_id
     bow.user_id = user_id
-    return crud.update_bow(db = db, bow = bow)
+    try:
+        return crud.update_bow(db = db, bow = bow)
+    except:
+        raise HTTPException(status_code=404, detail=f"Bow with bow_id={bow_id} not found.")
 
 ##
 ## Round Methods
@@ -78,7 +85,10 @@ def create_round(db: DBConn, user_id: int, round: schemas.RoundCreate):
 def update_round(db: DBConn, user_id: int, round_id: int, round: schemas.RoundUpdate):
     round.id = round_id
     round.user_id = user_id
-    return crud.update_round(db = db, round = round)
+    try:
+        return crud.update_round(db = db, round = round)
+    except:
+        raise HTTPException(status_code=404, detail=f"Round with round_id={round_id} not found.")
 
 ##
 ## End Methods
@@ -91,8 +101,14 @@ def create_end(db: DBConn, user_id: int, end: schemas.EndCreate):
 def update_end(db: DBConn, user_id: int, round_id: int, end_id: int, end: schemas.EndUpdate):
     end.id = end_id
     end.round_id = round_id
-    return crud.update_end(db = db, end = end)
-
+    try:
+        return crud.update_end(db = db, end = end)
+    except:
+        raise HTTPException(status_code=404, detail=f"End with end_id={end_id} not found.")
+    
 @app.delete("/user/{user_id}/round/{round_id}/end/{end_id}", response_model=schemas.Message)
 def delete_end(db: DBConn, user_id: int, round_id: int, end_id: int):
-    return crud.delete_end(db = db, end_id = end_id)
+    try:
+        return crud.delete_end(db = db, end_id = end_id)
+    except:
+        raise HTTPException(status_code=404, detail=f"End with end_id={end_id} not found.")
