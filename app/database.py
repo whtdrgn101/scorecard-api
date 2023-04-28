@@ -7,7 +7,7 @@ DB_URL = sa.engine.URL.create(
         drivername="postgresql",
         username=os.environ.get('SCORECARD_USER'),
         password=os.environ.get('SCORECARD_PASS'),
-        host="localhost",
+        host=os.environ.get('SCORECARD_HOST'),
         database="scorecard_db",
     )
 

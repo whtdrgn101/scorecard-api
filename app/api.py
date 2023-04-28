@@ -1,17 +1,27 @@
 from fastapi import Depends, FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from typing import Annotated
-
 import schemas
 import crud
 from database import SessionLocal, engine
-from models.base import Base
+from models import Base
 
 # Setup ORM Wrapper before app is initialized
 Base.metadata.create_all(bind=engine)
 
+# Cores allowable origins:
+origins = [ "http://localhost", "http://localhost:3000","http://localhost:5173"]
+
 # Initializes the FastAPI app
-app = FastAPI()
+app = FastAPI(title="Scorecard API")
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Dependency Injection Point for getting DB connection
 def get_db():

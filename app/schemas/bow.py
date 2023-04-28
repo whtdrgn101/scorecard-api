@@ -1,6 +1,5 @@
 from pydantic import BaseModel
 import datetime
-import json
 
 class BowTypeBase(BaseModel):
     name: str
@@ -37,9 +36,3 @@ class Bow(BowBase):
 
     class Config:
         orm_mode = True
-
-class BowCreateEncoder(json.JSONEncoder):
-    def default(self, obj):
-        if isinstance(obj, BowCreate):
-            return {"name": obj.name, "user_id": obj.user_id, "bow_type_id": obj.bow_type_id, "draw_weight": obj.draw_weight}
-        return super().default(obj)
