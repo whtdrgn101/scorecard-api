@@ -58,6 +58,9 @@ def update_bow(db: Session, bow: schemas.Bow):
 def get_rounds_by_user(db: Session, user_id: int, skip: int = 0, limit: int = 100):
     return db.query(models.Round).filter(models.Round.user_id == user_id).offset(skip).limit(limit).all()
 
+def get_round_by_user_round(db: Session, user_id: int, round_id: int):
+    return db.query(models.Round).filter(models.Round.id == round_id and models.Round.user_id == user_id).first()
+
 def create_round(db: Session, round: schemas.RoundCreate):
     new_round = models.Round(round_type_id = round.round_type_id, user_id = round.user_id, bow_id = round.bow_id, round_date = round.round_date, score_total = 0, created_date = datetime.now(), updated_date = datetime.now())
     db.add(new_round)

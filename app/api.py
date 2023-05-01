@@ -91,6 +91,13 @@ def get_bows_by_user(db: DBConn, user_id: int, skip: int = 0, limit: int = 100):
 def create_round(db: DBConn, user_id: int, round: schemas.RoundCreate):
     return crud.create_round(db = db, round = round)
 
+@app.get("/user/{user_id}/round/{round_id}", response_model=schemas.Round)
+def update_round(db: DBConn, user_id: int, round_id: int):
+    try:
+        return crud.get_round_by_user_round(db = db,user_id = user_id, round_id = round_id)
+    except:
+        raise HTTPException(status_code=404, detail=f"Round with round_id={round_id} not found.")
+    
 @app.put("/user/{user_id}/round/{round_id}", response_model=schemas.Round)
 def update_round(db: DBConn, user_id: int, round_id: int, round: schemas.RoundUpdate):
     round.id = round_id
