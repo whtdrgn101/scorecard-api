@@ -33,9 +33,23 @@ def get_db():
 
 DBConn = Annotated[Session, Depends(get_db)]
 
-##
-## User API's
-##
+###
+### Reference Data
+###
+@app.get("/bow-type/", response_model=list[schemas.BowType])
+def read_bow_types(db: DBConn):
+    bow_types = crud.get_bow_types(db = db)
+    return bow_types
+
+@app.get("/round-type/", response_model=list[schemas.RoundType])
+def read_round_types(db: DBConn):
+    round_types = crud.get_round_types(db = db)
+    return round_types
+
+
+###
+### User API's
+###
 @app.get("/user/", response_model=list[schemas.User])
 def read_users(db: DBConn, skip: int = 0, limit: int = 100):
     customers = crud.get_users(db = db, skip=skip, limit=limit)
@@ -60,9 +74,9 @@ def update_user(db: DBConn, user_id: int, user: schemas.UserUpdate):
     except:
         raise HTTPException(status_code=404, detail=f"User with end_id={user_id} not found.")
 
-##
-## Bow Methods
-##
+###
+### Bow Methods
+###
 @app.get("/user/{user_id}/bow", response_model=list[schemas.Bow])
 def get_bows_by_user(db: DBConn, user_id: int, skip: int = 0, limit: int = 100):
     return crud.get_bows_by_user(db = db, user_id=user_id, skip = skip, limit=limit)
@@ -80,9 +94,9 @@ def update_bow(db: DBConn, user_id: int, bow_id: int, bow: schemas.BowUpdate):
     except:
         raise HTTPException(status_code=404, detail=f"Bow with bow_id={bow_id} not found.")
 
-##
-## Round Methods
-##
+###
+### Round Methods
+###
 @app.get("/user/{user_id}/round", response_model=list[schemas.Round])
 def get_bows_by_user(db: DBConn, user_id: int, skip: int = 0, limit: int = 100):
     return crud.get_rounds_by_user(db = db, user_id=user_id, skip = skip, limit=limit)
@@ -107,9 +121,9 @@ def update_round(db: DBConn, user_id: int, round_id: int, round: schemas.RoundUp
     except:
         raise HTTPException(status_code=404, detail=f"Round with round_id={round_id} not found.")
 
-##
-## End Methods
-##
+###
+### End Methods
+###
 @app.post("/user/{user_id}/round/{round_id}/end", response_model=schemas.End)
 def create_end(db: DBConn, user_id: int, end: schemas.EndCreate):
     return crud.create_end(db = db, end = end)

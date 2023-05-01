@@ -4,6 +4,16 @@ import schemas
 import models
 
 ###
+### Reference Data
+###
+def get_bow_types(db: Session):
+    return db.query(models.BowType).all()
+
+def get_round_types(db: Session):
+    return db.query(models.RoundType).all()
+
+
+###
 ### User Methods
 ###
 def get_users(db: Session, skip: int = 0, limit: int = 100):
@@ -27,7 +37,8 @@ def update_user(db: Session, user: schemas.User):
     db.commit()
     db.refresh(usr)
     return usr
-    
+
+
 ###
 ### Bow Methods
 ###
@@ -51,6 +62,7 @@ def update_bow(db: Session, bow: schemas.Bow):
     db.commit()
     db.refresh(bow_changed)
     return bow_changed
+
 
 ###
 ### Round Methods
@@ -77,6 +89,7 @@ def update_round(db: Session, round: schemas.Round):
     db.commit()
     db.refresh(round_changed)
     return round_changed
+
 
 ###
 ### End Methods
