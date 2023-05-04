@@ -3,6 +3,7 @@ from typing import List, Optional
 import datetime
 from .bow import Bow
 from .end import End
+from .user import User
 
 class RoundTypeBase(BaseModel):
     name: str
@@ -37,6 +38,7 @@ class Round(RoundBase):
     updated_date: datetime.datetime
     round_type: RoundType
     score_total: int
+    user: User
     bow: Bow
     ends: Optional[List[End]]
 

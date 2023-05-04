@@ -1,14 +1,6 @@
-from fastapi import Depends, FastAPI, HTTPException
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from sqlalchemy.orm import Session
-from typing import Annotated
-import schemas
-import crud
-from database import SessionLocal, engine
-from models import Base
-
-# Setup ORM Wrapper before app is initialized
-Base.metadata.create_all(bind=engine)
+from routes import user_router, bow_router, round_router, end_router
 
 # Cores allowable origins:
 origins = [ "http://localhost", "http://localhost:3000","http://localhost:5173"]
@@ -23,123 +15,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Dependency Injection Point for getting DB connection
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
-
-DBConn = Annotated[Session, Depends(get_db)]
-
-###
-### Reference Data
-###
-@app.get("/bow-type/", response_model=list[schemas.BowType])
-def read_bow_types(db: DBConn):
-    bow_types = crud.get_bow_types(db = db)
-    return bow_types
-
-@app.get("/round-type/", response_model=list[schemas.RoundType])
-def read_round_types(db: DBConn):
-    round_types = crud.get_round_types(db = db)
-    return round_types
-
-
-###
-### User API's
-###
-@app.get("/user/", response_model=list[schemas.User])
-def read_users(db: DBConn, skip: int = 0, limit: int = 100):
-    customers = crud.get_users(db = db, skip=skip, limit=limit)
-    return customers
-
-@app.get("/user/{user_id}", response_model=schemas.User)
-def read_customer(db: DBConn, user_id: int):
-    db_cust = crud.get_user(db = db, user_id=user_id)
-    if db_cust is None:
-        raise HTTPException(status_code=404, detail=f"User [{user_id}] not found")
-    return db_cust
-
-@app.post("/user/", response_model=schemas.User)
-def create_user(db: DBConn, user: schemas.UserCreate):
-    return crud.create_user(db = db, user = user)
-
-@app.put("/user/{user_id}", response_model=schemas.User)
-def update_user(db: DBConn, user_id: int, user: schemas.UserUpdate):
-    try:
-        user.id = user_id
-        return crud.update_user(db = db, user = user)
-    except:
-        raise HTTPException(status_code=404, detail=f"User with end_id={user_id} not found.")
-
-###
-### Bow Methods
-###
-@app.get("/user/{user_id}/bow", response_model=list[schemas.Bow])
-def get_bows_by_user(db: DBConn, user_id: int, skip: int = 0, limit: int = 100):
-    return crud.get_bows_by_user(db = db, user_id=user_id, skip = skip, limit=limit)
-
-@app.post("/user/{user_id}/bow", response_model=schemas.Bow)
-def create_bow(db: DBConn, user_id: int, bow: schemas.BowCreate):
-    return crud.create_bow(db = db, bow = bow)
-
-@app.put("/user/{user_id}/bow/{bow_id}", response_model=schemas.Bow)
-def update_bow(db: DBConn, user_id: int, bow_id: int, bow: schemas.BowUpdate):
-    bow.id = bow_id
-    bow.user_id = user_id
-    try:
-        return crud.update_bow(db = db, bow = bow)
-    except:
-        raise HTTPException(status_code=404, detail=f"Bow with bow_id={bow_id} not found.")
-
-###
-### Round Methods
-###
-@app.get("/user/{user_id}/round", response_model=list[schemas.Round])
-def get_bows_by_user(db: DBConn, user_id: int, skip: int = 0, limit: int = 100):
-    return crud.get_rounds_by_user(db = db, user_id=user_id, skip = skip, limit=limit)
-
-@app.post("/user/{user_id}/round", response_model=schemas.Round)
-def create_round(db: DBConn, user_id: int, round: schemas.RoundCreate):
-    return crud.create_round(db = db, round = round)
-
-@app.get("/user/{user_id}/round/{round_id}", response_model=schemas.Round)
-def update_round(db: DBConn, user_id: int, round_id: int):
-    try:
-        return crud.get_round_by_user_round(db = db,user_id = user_id, round_id = round_id)
-    except:
-        raise HTTPException(status_code=404, detail=f"Round with round_id={round_id} not found.")
-    
-@app.put("/user/{user_id}/round/{round_id}", response_model=schemas.Round)
-def update_round(db: DBConn, user_id: int, round_id: int, round: schemas.RoundUpdate):
-    round.id = round_id
-    round.user_id = user_id
-    try:
-        return crud.update_round(db = db, round = round)
-    except:
-        raise HTTPException(status_code=404, detail=f"Round with round_id={round_id} not found.")
-
-###
-### End Methods
-###
-@app.post("/user/{user_id}/round/{round_id}/end", response_model=schemas.End)
-def create_end(db: DBConn, user_id: int, end: schemas.EndCreate):
-    return crud.create_end(db = db, end = end)
-
-@app.put("/user/{user_id}/round/{round_id}/end/{end_id}", response_model=schemas.End)
-def update_end(db: DBConn, user_id: int, round_id: int, end_id: int, end: schemas.EndUpdate):
-    end.id = end_id
-    end.round_id = round_id
-    try:
-        return crud.update_end(db = db, end = end)
-    except:
-        raise HTTPException(status_code=404, detail=f"End with end_id={end_id} not found.")
-    
-@app.delete("/user/{user_id}/round/{round_id}/end/{end_id}", response_model=schemas.Message)
-def delete_end(db: DBConn, user_id: int, round_id: int, end_id: int):
-    try:
-        return crud.delete_end(db = db, end_id = end_id)
-    except:
-        raise HTTPException(status_code=404, detail=f"End with end_id={end_id} not found.")
+# Routes
+app.include_router(user_router.router)
+app.include_router(bow_router.router)
+app.include_router(round_router.router)
+app.include_router(end_router.router)

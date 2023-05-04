@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String, Date, Boolean, Float, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from .base import Base
+from ..config import Base
 
 class BowType(Base):
     __tablename__ = "bow_type"
