@@ -18,12 +18,10 @@ class UserDAL():
         q = await self.db_session.execute(select(User).filter(User.id == user_id))
         return q.scalar()
 
-    async def create_user(self, user: User):
+    async def create_user(self, user: User) -> User:
         new_user = User(name = user.name, email = user.email, created_date = datetime.now(), updated_date = datetime.now())
         self.db_session.add(new_user)
-        self.db_session.flush()
-        self.db_session.refresh(new_user)
-        return new_user
+        await self.db_session.flush()
 
     async def update_user(self, user_id: int, user: User):
         q = update(User).where(User.id == user_id)

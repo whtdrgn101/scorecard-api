@@ -3,7 +3,7 @@ from typing import List, Optional
 
 from sqlalchemy import update
 from sqlalchemy.future import select
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 from datetime import datetime
 from db.models.bow import Bow, BowType
 
@@ -16,7 +16,10 @@ class BowDAL():
         return q.scalars().all()
 
     async def get_bows_by_user(self, user_id: int, skip: Optional[int] = 0, limit: Optional[int] = 100) -> List[Bow]:
-        q = await self.db_session.execute(select(Bow).filter(Bow.user_id == user_id).offset(skip).limit(limit))
+        q = await self.db_session.execute(
+            select(Bow).filter(Bow.user_id == user_id).offset(skip).limit(limit)
+                .options(joinedload(Bow.bow_type))
+        )
         return q.scalars().all()
 
     async def create_bow(self, user_id: int, bow: Bow):
