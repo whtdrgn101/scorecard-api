@@ -8,7 +8,7 @@ from dependencies import get_user_dal
 
 router = APIRouter()
 
-@router.get("/user/", response_model=None)
+@router.get("/user/", response_model=List[User])
 async def get_all_users(skip: Optional[int] = 0, limit: Optional[int] = 100, user_dal: UserDAL = Depends(get_user_dal)) -> List[User]:
     async with async_session() as session:
         async with session.begin():
