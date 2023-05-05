@@ -6,7 +6,7 @@ spec:
   selector:
     matchLabels:
       app: scorecard-api-app
-  replicas: 10
+  replicas: 5
   template:
     metadata:
       labels:
@@ -25,16 +25,19 @@ spec:
           imagePullPolicy: Never
           ports:
             - containerPort: 8000
+              name: http-web-svc
 ---
-            apiVersion: v1
+apiVersion: v1
 kind: Service
 metadata:
   name: scorecard-api-service
 spec:
+  allocateLoadBalancerNodePorts: false
   selector:
     app: scorecard-api-app
   ports:
-    - protocol: "TCP"
-      port: 8000
-      targetPort: 8000
+    - appProtocol: http
+      protocol: "TCP"
+      port: 8080
+      targetPort: http-web-svc
   type: LoadBalancer
