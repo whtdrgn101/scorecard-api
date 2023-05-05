@@ -27,8 +27,8 @@ spec:
         app: scorecard-api-app
     spec:
       containers:
-        - name: scorecard-api-app
-          image: scorecard-api-app:new
+        - name: scorecard-api
+          image: scorecard-api:latest
           imagePullPolicy: Never
           ports:
             - containerPort: 8000

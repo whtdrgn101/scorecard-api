@@ -1,6 +1,6 @@
 
 from typing import List, Optional
-from sqlalchemy import update
+from sqlalchemy import update, insert
 from sqlalchemy.future import select
 from sqlalchemy.orm import Session, selectinload
 from datetime import datetime
@@ -19,9 +19,17 @@ class UserDAL():
         return q.scalar()
 
     async def create_user(self, user: User) -> User:
-        new_user = User(name = user.name, email = user.email, created_date = datetime.now(), updated_date = datetime.now())
-        self.db_session.add(new_user)
-        await self.db_session.flush()
+        dt = datetime.now()
+        q = insert(User)
+        q = q.values(name=user.name)
+        q = q.values(email=user.email)
+        q = q.values(updated_date=dt)
+        q = q.values(created_date=dt)
+        q.execution_options(synchronize_session="fetch")
+        result = await self.db_session.execute(q)
+        user_id = result.inserted_primary_key[0]
+        user = User(id=user_id, name=user.name, email=user.email, updated_date=dt, created_date = dt)
+        return user
 
     async def update_user(self, user_id: int, user: User):
         q = update(User).where(User.id == user_id)

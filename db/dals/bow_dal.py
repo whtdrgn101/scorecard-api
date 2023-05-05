@@ -1,7 +1,6 @@
 
 from typing import List, Optional
-
-from sqlalchemy import update
+from sqlalchemy import update, insert
 from sqlalchemy.future import select
 from sqlalchemy.orm import Session, joinedload
 from datetime import datetime
@@ -22,11 +21,19 @@ class BowDAL():
         )
         return q.scalars().all()
 
-    async def create_bow(self, user_id: int, bow: Bow):
-        new_bow = Bow(bow_type_id = bow.bow_type_id, user_id = user_id, name = bow.name,  draw_weight = bow.draw_weight, created_date = datetime.now(), updated_date = datetime.now())
-        self.db_session.add(new_bow)
-        self.db_session.flush()
-        self.db_session.refresh(new_bow)
+    async def create_bow(self, user_id: int, bow: Bow) -> Bow:
+        dt = datetime.now()
+        q = insert(Bow)
+        q = q.values(name=bow.name)
+        q = q.values(user_id=bow.user_id)
+        q = q.values(bow_type_id=bow.bow_type_id)
+        q = q.values(draw_weight=bow.draw_weight)
+        q = q.values(updated_date=dt)
+        q = q.values(created_date=dt)
+        q.execution_options(synchronize_session="fetch")
+        result = await self.db_session.execute(q)
+        bow_id = result.inserted_primary_key[0]
+        new_bow = Bow(id=bow_id, user_id=bow.user_id, bow_type_id=bow.bow_type_id, draw_weight=bow.draw_weight, updated_date=dt, created_date=dt)
         return new_bow
 
     async def update_bow(self, bow_id: int, user_id: int, bow: Bow):

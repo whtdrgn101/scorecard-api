@@ -1,7 +1,7 @@
 
 from typing import List, Optional
 
-from sqlalchemy import update
+from sqlalchemy import update, insert
 from sqlalchemy.future import select
 from sqlalchemy.orm import Session, joinedload, subqueryload
 from datetime import datetime
@@ -39,9 +39,17 @@ class RoundDAL():
 
     async def create_round(self, user_id: int, round: Round):
         new_round = Round(round_type_id = round.round_type_id, user_id = user_id, bow_id = round.bow_id, round_date = round.round_date, score_total = 0, created_date = datetime.now(), updated_date = datetime.now())
-        self.db_session.add(new_round)
-        self.db_session.commit()
-        self.db_session.refresh(new_round)
+        dt = datetime.now()
+        q = insert(Round)
+        q = q.values(user_id=round.user_id)
+        q = q.values(round_type_id=round.round_type_id)
+        q = q.values(round_date=round.round_date)
+        q = q.values(updated_date=dt)
+        q = q.values(created_date=dt)
+        q.execution_options(synchronize_session="fetch")
+        result = await self.db_session.execute(q)
+        round_id = result.inserted_primary_key[0]
+        new_round = Round(id=round_id, user_id=round.user_id, round_type_id=round.round_type_id, updated_date=dt, created_date=dt, score_total=0)
         return new_round
 
     async def update_round(self, round_id: int, user_id: int, round: Round):
