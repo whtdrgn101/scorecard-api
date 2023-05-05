@@ -42,6 +42,7 @@ class RoundDAL():
         dt = datetime.now()
         q = insert(Round)
         q = q.values(user_id=round.user_id)
+        q = q.values(bow_id=round.bow_id)
         q = q.values(round_type_id=round.round_type_id)
         q = q.values(round_date=round.round_date)
         q = q.values(updated_date=dt)

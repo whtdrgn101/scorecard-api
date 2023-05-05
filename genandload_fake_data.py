@@ -14,7 +14,7 @@ import random
 def main(user_count: int = 10, bow_count:int = 5, round_count:int = 5, end_count:int = 10):
     fake = Faker()
     headers = {"Content-type":"application/json"}
-    base_url = "http://localhost:8000"
+    base_url = "http://192.168.49.2:32697"
     user_url = f"{base_url}/user"
 
     for usr in range(1, user_count):
