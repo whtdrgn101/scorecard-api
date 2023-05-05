@@ -6,7 +6,7 @@ spec:
   selector:
     matchLabels:
       app: scorecard-api-app
-  replicas: 5
+  replicas: 20
   template:
     metadata:
       labels:
@@ -15,13 +15,6 @@ spec:
       containers:
         - name: scorecard-api
           image: scorecard-api:latest
-          resources:
-            requests:
-              memory: "500Mi"
-              cpu: "500m"
-            limits:
-              memory: "750Mi"
-              cpu: "1000m"
           imagePullPolicy: Never
           ports:
             - containerPort: 8000
