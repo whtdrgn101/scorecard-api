@@ -20,6 +20,12 @@ async def get_bows_by_user(user_id: int, skip: int = 0, limit: int = 100, bow_da
         async with session.begin():
             return await bow_dal.get_bows_by_user(user_id=user_id, skip=skip, limit=limit)
 
+@router.get("/user/{user_id}/bow/{bow_id}", response_model=Bow)
+async def get_bow_by_user(user_id: int, bow_id: int, bow_dal: BowDAL = Depends(get_bow_dal)) -> Bow:
+    async with async_session() as session:
+        async with session.begin():
+            return await bow_dal.get_bow_by_user(user_id, bow_id)
+        
 @router.post("/user/{user_id}/bow", response_model=None)
 async def create_bow(user_id: int, bow: BowCreate, bow_dal: BowDAL = Depends(get_bow_dal)):
     async with async_session() as session:

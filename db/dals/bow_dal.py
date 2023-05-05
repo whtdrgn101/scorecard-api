@@ -20,6 +20,13 @@ class BowDAL():
                 .options(joinedload(Bow.bow_type))
         )
         return q.scalars().all()
+    
+    async def get_bow_by_user(self, user_id: int, bow_id: int) -> Bow:
+        q = await self.db_session.execute(
+            select(Bow).filter(Bow.user_id == user_id, Bow.id == bow_id)
+                .options(joinedload(Bow.bow_type))
+        )
+        return q.scalar()
 
     async def create_bow(self, user_id: int, bow: Bow) -> Bow:
         dt = datetime.now()
