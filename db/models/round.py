@@ -27,7 +27,7 @@ class Round(Base):
     created_date = Column(Date, unique=False, index=False)
     updated_date = Column(Date, unique=False, index=False)
 
-    user: Mapped[User] = relationship(User, foreign_keys=[user_id])
+    user: Mapped[User] = relationship(User, foreign_keys=[user_id], cascade="all, delete")
     round_type: Mapped[RoundType] = relationship(RoundType, foreign_keys=[round_type_id])
-    bow: Mapped[Bow] = relationship(Bow, foreign_keys=[bow_id])
-    ends: Mapped[list[End]] = relationship()
+    bow: Mapped[Bow] = relationship(Bow, foreign_keys=[bow_id], cascade="all, delete")
+    ends: Mapped[list[End]] = relationship(End, cascade="all, delete")

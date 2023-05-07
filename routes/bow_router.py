@@ -37,3 +37,9 @@ async def update_bow(user_id: int, bow_id: int, bow: BowUpdate, bow_dal: BowDAL 
     async with async_session() as session:
         async with session.begin():
             return await bow_dal.update_bow(bow_id, user_id, bow)
+
+@router.delete("/user/{user_id}/bow/{bow_id}", response_model=None)
+async def delete_bow(user_id: int, bow_id: int, bow_dal: BowDAL = Depends(get_bow_dal)):
+    async with async_session() as session:
+        async with session.begin():
+            return await bow_dal.delete_bow(bow_id=bow_id, user_id=user_id)

@@ -1,6 +1,6 @@
 
 from typing import List, Optional
-from sqlalchemy import update, insert
+from sqlalchemy import update, insert, delete
 from sqlalchemy.future import select
 from sqlalchemy.orm import Session, joinedload
 from datetime import datetime
@@ -11,7 +11,7 @@ class BowDAL():
         self.db_session = db_session
 
     async def get_bow_types(self) -> List[BowType]:
-        q = await self.db_session.execute(select(BowType))
+        q = await self.db_session.execute(select(BowType).where(BowType.active == True))
         return q.scalars().all()
 
     async def get_bows_by_user(self, user_id: int, skip: Optional[int] = 0, limit: Optional[int] = 100) -> List[Bow]:
@@ -52,3 +52,7 @@ class BowDAL():
         q = q.values(updated_date=datetime.now())
         q.execution_options(synchronize_session="fetch")
         await self.db_session.execute(q)
+
+    async def delete_bow(self, bow_id:int, user_id: int):
+        q = delete(Bow).where(Bow.id == bow_id, Bow.user_id == user_id)
+        await(self.db_session.execute(q))

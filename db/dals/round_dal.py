@@ -14,12 +14,12 @@ class RoundDAL():
         self.db_session = db_session
 
     async def get_round_types(self) ->List[RoundType]:
-        q = await self.db_session.execute(select(RoundType))
+        q = await self.db_session.execute(select(RoundType).where(RoundType.active == True))
         return q.scalars().all()
 
     async def get_rounds_by_user(self, user_id: int, skip: int = 0, limit: int = 100) -> List[Round]:
         q = await self.db_session.execute(
-            select(Round).filter(Round.user_id == user_id).offset(skip).limit(limit)
+            select(Round).filter(Round.user_id == user_id).order_by(Round.round_date.desc()).offset(skip).limit(limit)
                 .options(joinedload(Round.user))
                 .options(joinedload(Round.round_type))
                 .options(joinedload(Round.bow).joinedload(Bow.bow_type))

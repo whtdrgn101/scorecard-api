@@ -1,4 +1,6 @@
 from sqlalchemy import Column, Integer, String, Date
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+from db.models.bow import Bow
 from ..config import Base
 
 class User(Base):
@@ -9,3 +11,5 @@ class User(Base):
     name = Column(String, unique=False, index=False)
     created_date = Column(Date, unique=False, index=False)
     updated_date = Column(Date, unique=False, index=False)
+
+    bows: Mapped[list[Bow]] = relationship(Bow, cascade="all, delete")

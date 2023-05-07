@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 import datetime
+from .bow import Bow
 
 class UserBase(BaseModel):
     email: str
