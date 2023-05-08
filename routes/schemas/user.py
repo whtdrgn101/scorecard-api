@@ -7,7 +7,7 @@ class UserBase(BaseModel):
     name: str
 
 class UserCreate(UserBase):
-    pass
+    password: str
 
 class UserUpdate(UserBase):
     id: int

@@ -5,6 +5,7 @@ from sqlalchemy.future import select
 from sqlalchemy.orm import Session, selectinload
 from datetime import datetime
 from db.models.user import User
+import hashlib
 
 class UserDAL():
     def __init__(self, db_session:Session):
@@ -25,6 +26,7 @@ class UserDAL():
         q = q.values(email=user.email)
         q = q.values(updated_date=dt)
         q = q.values(created_date=dt)
+        q = q.values(password=self.generate_md5_hash(user.password))
         q.execution_options(synchronize_session="fetch")
         result = await self.db_session.execute(q)
         user_id = result.inserted_primary_key[0]
@@ -38,3 +40,12 @@ class UserDAL():
         q = q.values(updated_date=datetime.now())
         q.execution_options(synchronize_session="fetch")
         await self.db_session.execute(q)
+
+    async def authenticate_user(self, email:str, password:str) -> User:
+        q = await self.db_session.execute(select(User).filter(User.email == email, User.password == self.generate_md5_hash(password)))
+        return q.scalar()
+
+    def generate_md5_hash(self, string:str):
+        md5_hash = hashlib.md5()
+        md5_hash.update(string.encode('utf-8'))
+        return md5_hash.hexdigest()
