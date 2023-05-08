@@ -16,6 +16,7 @@ class User(UserBase):
     id: int
     created_date: datetime.datetime
     updated_date: datetime.datetime
-
+    last_login_date: datetime.datetime
+    
     class Config:
         orm_mode = True

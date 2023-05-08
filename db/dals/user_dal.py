@@ -43,7 +43,12 @@ class UserDAL():
 
     async def authenticate_user(self, email:str, password:str) -> User:
         q = await self.db_session.execute(select(User).filter(User.email == email, User.password == self.generate_md5_hash(password)))
-        return q.scalar()
+        ret = q.scalar()
+        q = update(User).filter(User.id == ret.id)
+        q = q.values(last_login_date=datetime.now())
+        q.execution_options(synchronize_session="fetch")
+        result = await self.db_session.execute(q)
+        return ret
 
     def generate_md5_hash(self, string:str):
         md5_hash = hashlib.md5()
