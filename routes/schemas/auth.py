@@ -11,4 +11,5 @@ class AuthCreate(AuthBase):
 
 class Auth(AuthBase):
     user_id: int
+    name: str
     last_login_date: datetime.datetime

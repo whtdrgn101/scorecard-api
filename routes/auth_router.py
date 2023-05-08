@@ -13,5 +13,5 @@ async def auth_user(auth: AuthCreate, user_dal: UserDAL = Depends(get_user_dal))
     async with async_session() as session:
         async with session.begin():
             result = await user_dal.authenticate_user(email = auth.email, password=auth.password)
-            auth = Auth(email=result.email, last_login_date=result.last_login_date, user_id=result.id)
+            auth = Auth(email=result.email, name=result.name, last_login_date=result.last_login_date, user_id=result.id)
             return auth
