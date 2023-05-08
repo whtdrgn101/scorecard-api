@@ -51,8 +51,10 @@ class BowDAL():
         q = q.values(draw_weight=bow.draw_weight)
         q = q.values(updated_date=datetime.now())
         q.execution_options(synchronize_session="fetch")
-        await self.db_session.execute(q)
+        result = await self.db_session.execute(q)
+        return result
 
     async def delete_bow(self, bow_id:int, user_id: int):
         q = delete(Bow).where(Bow.id == bow_id, Bow.user_id == user_id)
-        await(self.db_session.execute(q))
+        result = await self.db_session.execute(q)
+        return result

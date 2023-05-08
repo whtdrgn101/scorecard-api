@@ -36,10 +36,10 @@ class Round(RoundBase):
     id: int
     created_date: datetime.datetime
     updated_date: datetime.datetime
-    round_type: RoundType
+    round_type: Optional[RoundType]
     score_total: int
-    user: User
-    bow: Bow
+    user: Optional[User]
+    bow: Optional[Bow]
     ends: Optional[List[End]]
 
     class Config:

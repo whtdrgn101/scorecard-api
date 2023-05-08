@@ -1,7 +1,7 @@
 
 from typing import List, Optional
 
-from sqlalchemy import update, insert
+from sqlalchemy import update, insert, delete
 from sqlalchemy.future import select
 from sqlalchemy.orm import Session, joinedload, subqueryload
 from datetime import datetime
@@ -50,7 +50,7 @@ class RoundDAL():
         q.execution_options(synchronize_session="fetch")
         result = await self.db_session.execute(q)
         round_id = result.inserted_primary_key[0]
-        new_round = Round(id=round_id, user_id=round.user_id, round_type_id=round.round_type_id, updated_date=dt, created_date=dt, score_total=0)
+        new_round = Round(id=round_id, user_id=round.user_id, bow_id=round.bow_id, round_type_id=round.round_type_id, round_date=round.round_date, updated_date=dt, created_date=dt, score_total=0)
         return new_round
 
     async def update_round(self, round_id: int, user_id: int, round: Round):
@@ -60,4 +60,10 @@ class RoundDAL():
         q = q.values(bow_id=round.bow_id)
         q = q.values(updated_date=datetime.now())
         q.execution_options(synchronize_session="fetch")
-        await self.db_session.execute(q)
+        result = await self.db_session.execute(q)
+        return result
+
+    async def delete_round(self, round_id: int, user_id: int):
+        q = delete(Round).where(Round.id == round_id, Round.user_id == user_id)
+        result = await self.db_session.execute(q)
+        return result
