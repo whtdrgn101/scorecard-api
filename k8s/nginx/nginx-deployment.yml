@@ -18,6 +18,13 @@ spec:
       containers:
         - image: nginx:1.21
           name: nginx-container
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "0.5"
+            limits:
+              memory: "1Gi"
+              cpu: "1"
           ports:
             - containerPort: 80
           readinessProbe:
