@@ -10,7 +10,7 @@ spec:
       containers:
         - name: migration-container
           image: whtdrgn101/scorecard-api:latest
-          command: ['alembic', 'upgrade', 'head']
+          command: ['python', 'init_db.py']
           envFrom:
             - secretRef:
                 name: migration-secret

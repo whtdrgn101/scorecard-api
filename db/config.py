@@ -8,7 +8,7 @@ DATABASE_URL = sa.engine.URL.create(
         username=os.environ.get('SCORECARD_USER'),
         password=os.environ.get('SCORECARD_PASS'),
         host=os.environ.get('SCORECARD_HOST'),
-        database="scorecard_db",
+        database=os.environ.get('SCORECARD_DB'),
     )
 
 engine = create_async_engine(DATABASE_URL, future=True, echo=True)
