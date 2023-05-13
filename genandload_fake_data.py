@@ -18,7 +18,7 @@ def main(base_url: str = "http://localhost:8000", user_count: int = 10, bow_coun
     user_url = f"{base_url}/user"
 
     for usr in range(1, user_count):
-        user = schemas.UserCreate(name = fake.name(), email = fake.email())
+        user = schemas.UserCreate(name = fake.name(), email = fake.email(), password='abc123')
         json_data = json.dumps(user, cls=schemas.CreationEncoder)
         response = requests.post(user_url, data = json_data, headers=headers)
         if response.status_code == 200:
