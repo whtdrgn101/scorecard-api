@@ -9,7 +9,7 @@ from dependencies import get_bow_dal
 from datetime import datetime
 router = APIRouter()
 
-@router.get("/bow-type/", response_model=List[BowType])
+@router.get("/bow-type", response_model=List[BowType])
 async def read_bow_types(bow_dal: BowDAL = Depends(get_bow_dal)) ->List[BowType]:
     async with async_session() as session:
         async with session.begin():

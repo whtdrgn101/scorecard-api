@@ -9,7 +9,7 @@ from datetime import datetime
 
 router = APIRouter()
 
-@router.get("/round-type/", response_model=List[RoundType])
+@router.get("/round-type", response_model=List[RoundType])
 async def read_round_types(round_dal: RoundDAL = Depends(get_round_dal)) -> List[RoundType]:
     async with async_session() as session:
         async with session.begin():

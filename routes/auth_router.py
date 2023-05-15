@@ -8,7 +8,7 @@ from dependencies import get_user_dal
 
 router = APIRouter()
 
-@router.post("/auth/", response_model=Auth)
+@router.post("/auth", response_model=Auth)
 async def auth_user(auth: AuthCreate, user_dal: UserDAL = Depends(get_user_dal)):
     async with async_session() as session:
         async with session.begin():
