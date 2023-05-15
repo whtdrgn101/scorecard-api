@@ -1,5 +1,5 @@
 
-from sqlalchemy import update, insert
+from sqlalchemy import update, insert, delete
 from sqlalchemy.orm import Session
 from datetime import datetime
 from db.models.end import End
@@ -29,6 +29,6 @@ class EndDAL():
         await self.db_session.execute(q)
 
     async def delete_end(self, end_id: int):
-        deleted_end = self.db_session.query(End).filter(End.id == end_id).first()
-        self.db_session.delete(deleted_end)
-        await self.db_session.flush()      
+        q = delete(End).where(End.id == end_id)
+        result = await self.db_session.execute(q)
+        return result     
