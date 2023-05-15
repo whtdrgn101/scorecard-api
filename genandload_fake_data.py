@@ -7,12 +7,12 @@ import requests
 import random 
 
 @click.command()
-@click.option('--base_url', default="http://localhost:8000", required=False, type=str, show_default=True, help='Base URL for REST API to build all requests from')
+@click.option('--base_url', default="http://192.168.49.2:30009", required=False, type=str, show_default=True, help='Base URL for REST API to build all requests from')
 @click.option('--user_count', default=10, required=False, type=int, show_default=True, help='Number of test users to generate.')
 @click.option('--bow_count', default=5, required=False, type=int, show_default=True, help='Number of bows to create per user.')
 @click.option('--round_count', default=5, required=False, type=int, show_default=True, help='Number of rounds to create per bow.')
 @click.option('--end_count', default=10, required=False, type=int, show_default=True, help='Number of ends to create per round.')
-def main(base_url: str = "http://localhost:8000", user_count: int = 10, bow_count:int = 5, round_count:int = 5, end_count:int = 10):
+def main(base_url: str = "http://192.168.49.2:30009", user_count: int = 10, bow_count:int = 5, round_count:int = 5, end_count:int = 10):
     fake = Faker()
     headers = {"Content-type":"application/json"}
     user_url = f"{base_url}/user"

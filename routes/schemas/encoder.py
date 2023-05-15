@@ -8,7 +8,7 @@ import datetime
 class CreationEncoder(json.JSONEncoder):
     def default(self, obj):
         if isinstance(obj, UserCreate):
-            return {"name": obj.name, "email": obj.email}
+            return {"name": obj.name, "email": obj.email, "password": obj.password}
         if isinstance(obj, BowCreate):
             return {"name": obj.name, "user_id": obj.user_id, "bow_type_id": obj.bow_type_id, "draw_weight": obj.draw_weight}
         if isinstance(obj, RoundCreate):
