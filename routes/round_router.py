@@ -4,7 +4,7 @@ from db.config import async_session
 from db.dals.round_dal import RoundDAL
 from routes.schemas.round import RoundCreate, RoundUpdate, Round, RoundType
 from routes.schemas.message import Message
-from dependencies import get_round_dal
+from routes.dependencies import get_round_dal
 from datetime import datetime
 
 router = APIRouter()

@@ -3,7 +3,7 @@ from fastapi import APIRouter, Depends
 from db.config import async_session
 from db.dals.end_dal import EndDAL
 from routes.schemas.end import EndCreate, EndUpdate
-from dependencies import get_end_dal
+from routes.dependencies import get_end_dal
 
 router = APIRouter()
 

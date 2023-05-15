@@ -5,7 +5,7 @@ from db.config import async_session
 from db.dals.bow_dal import BowDAL
 from routes.schemas import Bow, BowCreate, BowUpdate, BowType
 from routes.schemas.message import Message
-from dependencies import get_bow_dal
+from routes.dependencies import get_bow_dal
 from datetime import datetime
 router = APIRouter()
 

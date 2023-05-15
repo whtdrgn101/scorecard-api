@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends
 from db.config import async_session
 from db.dals.user_dal import UserDAL
 from routes.schemas import User, UserCreate, UserUpdate
-from dependencies import get_user_dal
+from routes.dependencies import get_user_dal
 
 router = APIRouter()
 
