@@ -1,5 +1,5 @@
 from db.config import session
-from db.dals.user_dal import UserDAL, ALGORITHM, JWT_SECRET_KEY
+from db.dals.user_dal import UserDAL, ALGORITHM, JWT_SECRET_KEY, JWT_REFRESH_SECRET_KEY
 from db.dals.bow_dal import BowDAL
 from db.dals.round_dal import RoundDAL
 from db.dals.end_dal import EndDAL
@@ -51,6 +51,27 @@ def get_token_user(token: str = Depends(reuseable_oauth)):
     try:
         payload = jwt.decode(
             token, JWT_SECRET_KEY, algorithms=[ALGORITHM]
+        )
+                
+        if datetime.fromtimestamp(payload['exp']) < datetime.now():
+            raise HTTPException(
+                status_code = status.HTTP_401_UNAUTHORIZED,
+                detail="Token expired",
+                headers={"WWW-Authenticate": "Bearer"},
+            )
+    except(jwt.JWTError, ValidationError):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Could not validate credentials",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    
+    return payload
+
+def get_refresh_token(token: str = Depends(reuseable_oauth)):
+    try:
+        payload = jwt.decode(
+            token, JWT_REFRESH_SECRET_KEY, algorithms=[ALGORITHM]
         )
                 
         if datetime.fromtimestamp(payload['exp']) < datetime.now():

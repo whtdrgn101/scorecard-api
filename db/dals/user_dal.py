@@ -84,8 +84,7 @@ class UserDAL():
             raise Exception("Invalid username or password")
         
         return {
-            "access_token": self.create_access_token(existing),
-            "refresh_token": self.create_refresh_token(existing)
+            "access_token": self.create_access_token(existing)
         }
 
     def get_hashed_password(self, password: str) -> str:
