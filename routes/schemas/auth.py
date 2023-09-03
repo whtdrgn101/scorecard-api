@@ -9,7 +9,6 @@ class AuthBase(BaseModel):
 class AuthCreate(AuthBase):
     pass
 
-class Auth(AuthBase):
-    user_id: int
-    name: str
-    last_login_date: datetime.datetime
+class AuthToken():
+    access_token: str
+    refresh_token: str

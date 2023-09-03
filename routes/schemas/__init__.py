@@ -17,4 +17,4 @@ from .end import EndUpdate
 from .message import Message
 from .encoder import CreationEncoder
 from .auth import AuthCreate
-from .auth import Auth
+from .auth import AuthToken
