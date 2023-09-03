@@ -76,6 +76,17 @@ class UserDAL():
             "access_token": self.create_access_token(existing),
             "refresh_token": self.create_refresh_token(existing)
         }
+    
+    def exchange_refresh_token(self, user_id):
+        existing = self.db_session.query(User).filter(User.id == user_id).first()
+
+        if existing is None:
+            raise Exception("Invalid username or password")
+        
+        return {
+            "access_token": self.create_access_token(existing),
+            "refresh_token": self.create_refresh_token(existing)
+        }
 
     def get_hashed_password(self, password: str) -> str:
         return password_context.hash(password)

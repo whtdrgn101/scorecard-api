@@ -24,19 +24,28 @@ def get_user_dal():
         db.close()
 
 def get_bow_dal():
-    with session() as session:
-        with session.begin():
-            yield BowDAL(session)
+    db = session()
+    try:
+        with db.begin():
+            yield BowDAL(db)
+    finally:
+        db.close()
 
 def get_round_dal():
-    with session() as session:
-        with session.begin():
-            yield RoundDAL(session)
+    db = session()
+    try:
+        with db.begin():
+            yield RoundDAL(db)
+    finally:
+        db.close()
 
 def get_end_dal():
-    with session() as session:
-        with session.begin():
-            yield EndDAL(session)
+    db = session()
+    try:
+        with db.begin():
+            yield EndDAL(db)
+    finally:
+        db.close()
 
 def get_token_user(token: str = Depends(reuseable_oauth)):
     try:
