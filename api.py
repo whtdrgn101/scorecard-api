@@ -3,7 +3,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from routes import user_router, bow_router, round_router, end_router, auth_router
 
 # Cores allowable origins:
-origins = [ "http://localhost", "http://localhost:3000","http://localhost:5173", "https://www.myshootinglog.com", "https://myshootinglog.com"]
+origins = [ "http://localhost", "http://localhost:3000", "http://localhost:8080", "http://localhost:5173", "https://www.myshootinglog.com", 
+           "https://myshootinglog.com", "https://myarcheryscorecard.com", "https://www.myarcheryscorecard.com"]
 
 # Initializes the FastAPI app
 app = FastAPI(title="Scorecard API")
