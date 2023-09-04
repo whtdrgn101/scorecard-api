@@ -23,6 +23,8 @@ This folder contains models, dals (data access layers), and config helpers which
 - SCORECARD_PASS -- Database Password
 - SCORECARD_HOST -- Host for the database server
 - SCORECARD_DB -- Database name on for the scorecard DB
+- JWT_SECRET_KEY -- Secret key used to encrypt JWT Authorization tokens
+- JWT_REFRESH_SECRET_KEY -- Secret key used to encrypt JWT Refresh Tokens
 
 ### `routes`
 This folder contains the route definitions and route schemas for the API.  Also contains dependency injection helps for the DAL's to allow for better unit testing.
